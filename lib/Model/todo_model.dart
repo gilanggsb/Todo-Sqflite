@@ -1,4 +1,6 @@
-class TodoField{
+const String todoTable = 'TODO';
+
+class TodoField {
   static const String id = 'id';
   static const String title = 'title';
   static const String description = 'description';
@@ -16,16 +18,20 @@ class TodoModel {
   });
 
   Map<String, dynamic> toMap() {
-   return {
-     "id":id,
-     "title":title,
-     "description":description,
-   };
+    return {
+      "id": id,
+      "title": title,
+      "description": description,
+    };
   }
+
+  
 
   factory TodoModel.fromMapObject(Map<String, dynamic> map) => TodoModel(
         id: map['id'],
         title: map['title'],
         description: map['description'],
       );
+
+ 
 }

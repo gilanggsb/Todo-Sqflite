@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todos_sqlite/Database/db_todo.dart';
+import 'package:todos_sqlite/Database/singleton_db.dart';
 import 'package:todos_sqlite/Model/todo_model.dart';
 import 'package:todos_sqlite/widget/todo_tile.dart';
 
@@ -28,7 +29,8 @@ class _TodoScreenState extends State<TodoScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    DatabaseTodo.getDatabaseConnect();
+    // DatabaseTodo.getDatabaseConnect();
+    SingletonDB.getDatabaseConnect();
    
   }
 
@@ -66,7 +68,7 @@ class _TodoScreenState extends State<TodoScreen> {
                           backgroundColor: Colors.lightBlue),
                       onPressed: () async {
                         final int count = await DatabaseTodo.getCount();
-                        await DatabaseTodo.insertData(
+                        await SingletonDB.insertData(
                           TodoModel(
                               id: count + 1,
                               title: titleController.text,
@@ -74,7 +76,7 @@ class _TodoScreenState extends State<TodoScreen> {
                         );
                         Navigator.pop(context);
                         setState(() {
-                          DatabaseTodo.showAllData();
+                          SingletonDB.showAllData();
                         });
                         titleController.text = '';
                         descriptionController.text = '';
@@ -117,7 +119,7 @@ class _TodoScreenState extends State<TodoScreen> {
         },
       ),
       body: FutureBuilder(
-          future: DatabaseTodo.showAllData(),
+          future: SingletonDB.showAllData(),
           builder: (context, AsyncSnapshot<List<TodoModel>> snapshot) {
             if (snapshot.hasData) {
               todoList = snapshot.data!;
@@ -133,7 +135,7 @@ class _TodoScreenState extends State<TodoScreen> {
                       subtitle: Text(todoList[index].description),
                       trailing: GestureDetector(
                         onTap: () {
-                          DatabaseTodo.deleteData(todoList[index].id);
+                          SingletonDB.deleteData(todoList[index].id);
                         setState(() {
                           
                         });
